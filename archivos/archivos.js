@@ -2,6 +2,7 @@ const fs = require('fs')
 
 
 console.clear()
+
 class Contenedor {
     constructor(file){
         this.file = file
@@ -12,8 +13,9 @@ class Contenedor {
         try{
             const id = this.products.length > 0 ? product.id = this.products.length + 1 : product.id = 1       
             this.products.push(product)
-            await fs.promises.writeFile(`./${this.file}`, JSON.stringify(this.products)) 
-            console.log('El archivo fue creado correctamente')           
+            fs.writeFileSync(this.file, JSON.stringify(this.products))
+            
+                  
             return id
 
         }
@@ -35,9 +37,9 @@ class Contenedor {
         }
     }
 
-    getAll = () => {
+    getAll(){
         const auxArray = this.products.map(product => product)
-        console.log(auxArray)
+        return auxArray
     }
 
     deleteById = (id) => {
@@ -46,9 +48,14 @@ class Contenedor {
         })
         if(deleteProduct){            
             
-            fs.promises.writeFile(`./${this.file}`, JSON.stringify(deleteProduct)).then(data => console.log(this.products))            
+            fs.promises.writeFile(`./${this.file}`, JSON.stringify(deleteProduct)).then(data => console.log(deleteProduct))            
         }    
 
+    }
+
+    getRandomProduct = () => {
+        let randomNum = Math.ceil(Math.random()*3)
+        return this.getById(randomNum)        
     }
 
     deleteAll = () => {
@@ -67,8 +74,8 @@ producto.save({title: 'Barra', price:'4300'})
 // producto.getById(3)
 // producto.getAll()
 // producto.deleteAll()
-
-producto.deleteById(1)
-
+// producto.deleteById(1)
 // mancuerna.getAll('./productos.txt')
 
+
+module.exports = producto
